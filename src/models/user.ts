@@ -13,6 +13,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    tasks: {
+      type: [ Object ],
+      default: []
+    },
+
     dayTimeSum: {
       type: Number,
       default: 0

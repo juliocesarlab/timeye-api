@@ -11,7 +11,7 @@ const taskSchema = new mongoose.Schema({
     required: false
   },
 
-  timeSpent: {
+  hoursSpent: {
     type: Number,
     default: 0
   },
@@ -19,6 +19,12 @@ const taskSchema = new mongoose.Schema({
   productivity: {
     type: Number,
     default: 0
+  },
+
+  ownerId: {
+    type: String,
+    unique: true,
+    required: true
   }
 },
 {
