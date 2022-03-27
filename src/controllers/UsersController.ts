@@ -3,8 +3,7 @@ import User from "../models/user";
 import { hashPass } from '../services/authentication/encrypt';
 import UsersServices from "../services/users/UsersServices";
 
-
-class UserController {
+class UsersController {
   async index(req: Request, res: Response) {
     try {
       const users = await User.find();
@@ -85,4 +84,4 @@ class UserController {
   }
 }
 
-export default new UserController();
+export default new UsersController();

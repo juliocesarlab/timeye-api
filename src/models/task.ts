@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 
+
 const taskSchema = new mongoose.Schema({
   name: {
     type: String,
+    unique: true,
     required: true
   },
 
@@ -13,17 +15,18 @@ const taskSchema = new mongoose.Schema({
 
   hoursSpent: {
     type: Number,
+    required: false,
     default: 0
   },
 
   productivity: {
     type: Number,
+    required: false,
     default: 0
   },
 
   ownerId: {
     type: String,
-    unique: true,
     required: true
   }
 },
