@@ -8,7 +8,6 @@ class App{
   public server: Application;
 
   constructor() {
-   
     this.server = express();
     this.server.listen(5000);
     this.middlewares();

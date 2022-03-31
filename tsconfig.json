@@ -10,5 +10,11 @@
     "noImplicitAny": true,
     "esModuleInterop": true,
     "resolveJsonModule": true
-  }
+  },
+  "typeRoots": [
+    "./src/@types",
+    "./custom_typings",
+    "./@types",
+    "./node_modules/@types"
+  ]
 }

@@ -7,10 +7,9 @@ class UsersController {
   async index(req: Request, res: Response) {
     try {
       const users = await User.find();
-
+      
       return res.json(users)
     } catch(err) {
-      console.log("Error" + err)
       return res.status(500).json({ error: "Internal server error"})
     }
   }
