@@ -1,13 +1,17 @@
 import { Router } from 'express';
+import SessionsController from '../controllers/SessionsController';
 import TasksController from '../controllers/TasksController';
 import UsersController from '../controllers/UsersController';
 import auth from '../middlewares/auth';
+
+
 
 const routes = Router();
 
 /* public routes */
 
-routes.get('/', (req, res) => res.send("hi"))
+routes.post('/users', UsersController.create)
+routes.put('/sessions', SessionsController.create);
 
 routes.use(auth)
 
@@ -17,7 +21,6 @@ routes.use(auth)
 
 routes.get('/users', UsersController.index)
 routes.get('/users/:id', UsersController.show)
-routes.post('/users', UsersController.create)
 routes.put('/users/:id', UsersController.update)
 routes.delete('/users/:id', UsersController.destroy)
 

@@ -8,11 +8,13 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 
   if (!authHeader) return res.status(401).json({message: "Token was not provided", status: "failure"})
 
-  const token = authHeader.split(' ')[1] as string //return [Bearer, token]
+  const [,token] = authHeader.split(' ') //return ['Bearer', 'token']
 
   try {
-    const decoded = promisify(jwt.verify(token, authConfig.secret) as any) as any
-    req.userId= decoded.id
+    const decoded = await promisify(jwt.verify as any)(token, authConfig.secret) as any
+    req.userId = decoded.id
+
+    next()
   } catch(err) {
     return res.status(401).json({message: "Invalid Token", status: "failure"})
   }
