@@ -15,7 +15,7 @@ class TasksController {
       ownerId: user_id 
     })
 
-    return res.status(302).json({tasks, status: "success"})
+    return res.status(202).json({tasks, status: "success"})
 
    } catch(e) {
      return res.status(500).json({message: "Internal server error", status: "failure"})
@@ -79,7 +79,7 @@ class TasksController {
   async update(req: Request, res: Response) {
     try {
       const { user_id, id } = req.params
-      const {name, sample, hoursSpent, productivity} = req.body
+      const {name, sample, timeSpent, productivity} = req.body
       
       const user = UsersServices.verifyIfExistsById(user_id)
       if (!user) return res.status(404).json({message: "User not found", status: "failure"})
@@ -94,7 +94,7 @@ class TasksController {
       await task.updateOne({
         name,
         sample,
-        hoursSpent,
+        timeSpent,
         productivity
       })
 

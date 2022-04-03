@@ -13,7 +13,7 @@ class SessionsController {
   
       if (!user) 
         return res.status(401).json({ message: "Invalid email or password", status: "failure" })
-      if (!validatePass(user, password)) 
+      if (!await validatePass(user, password)) 
         return res.status(401).json({ message: "Invalid email or password", status: "failure" })
     
       const { id } = user
