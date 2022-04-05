@@ -55,7 +55,7 @@ class TasksController {
 
   async create(req: Request, res: Response) {
     try {
-      const { name, sample, hoursSpent, productivity } = req.body;
+      const { name, sample } = req.body;
       const { user_id } = req.params;
       const user = UsersServices.verifyIfExistsById(user_id);
 
@@ -78,9 +78,9 @@ class TasksController {
       const createdTask = await Task.create({
         name,
         sample,
-        hoursSpent,
-        productivity,
         ownerId: user_id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
 
       return res.status(201).json({ createdTask, status: "success" });
@@ -154,28 +154,56 @@ class TasksController {
     }
   }
 
-  async getToday(req: Request, res: Response) {
+  async getTodayStatistics(req: Request, res: Response) {
     try {
       const { user_id } = req.params;
-      const { today } = req.body;
 
-      const user = UsersServices.verifyIfExistsById(user_id);
+      const user = await UsersServices.verifyIfExistsById(user_id);
 
       if (!user)
         return res
           .status(404)
           .json({ message: "User not found", status: "failure" });
 
-      const todayDate = new Date(today);
+      let todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
 
-      const tasks = await Task.find({}).where({
+      let todayEnd = new Date();
+      todayEnd.setHours(23, 59, 59, 999);
+
+      const tasks = await Task.find({
         ownerId: user_id,
-        createdAt: today.toISOString(),
+        updatedAt: { $gte: todayStart, $lte: todayEnd },
       });
 
-      if (tasks) return res.status(200).json({ tasks });
+      const allTimeSpentFromTasks = tasks.map((task) => {
+        const timeSpent = task.timeSpent;
+        const test = new Date(timeSpent);
+        console.log(test);
+        const hours = new Date(timeSpent).getHours();
+
+        const minutes = new Date(timeSpent).getMinutes() / 60; //convert to hours
+
+        const seconds = new Date(timeSpent).getSeconds() / 60 / 60; //convert to hours;
+
+        const hoursSum = hours + minutes + seconds;
+        console.log(hoursSum.toFixed(2));
+        return parseFloat(hoursSum.toFixed(2));
+      });
+
+      const hoursSpentSum = allTimeSpentFromTasks.reduce(
+        (prev, curr) => prev + curr
+      );
+
+      const dayProductivityPercentage = (hoursSpentSum / 8) * 100;
+
+      if (tasks) {
+        return res
+          .status(200)
+          .json({ tasks, hoursSpentSum, dayProductivityPercentage });
+      }
     } catch (e) {
-      return e;
+      return res.status(500).json({ e });
     }
   }
 }

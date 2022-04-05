@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 
+const defaultNowDate = new Date();
+defaultNowDate.setHours(defaultNowDate.getHours() - 3);
+
 const taskSchema = new mongoose.Schema(
   {
     name: {
@@ -16,7 +19,7 @@ const taskSchema = new mongoose.Schema(
     timeSpent: {
       type: Date,
       required: false,
-      default: 0,
+      default: new Date().setHours(-3, 0, 0, 0),
     },
 
     productivity: {
@@ -29,9 +32,19 @@ const taskSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    createdAt: {
+      type: Date,
+      default: new Date(),
+    },
+
+    updatedAt: {
+      type: Date,
+      default: new Date(),
+    },
   },
   {
-    timestamps: true,
+    timestamps: false,
   }
 );
 
