@@ -1,10 +1,9 @@
-import cors from 'cors';
+import cors from "cors";
 import express, { Application } from "express";
-import routes from './routes/routes';
-import './services/database/index';
+import routes from "./routes/routes";
+import "./services/database/index";
 
-class App{
-
+class App {
   public server: Application;
 
   constructor() {

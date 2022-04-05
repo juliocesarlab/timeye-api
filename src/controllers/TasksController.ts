@@ -76,12 +76,16 @@ class TasksController {
           status: "failure",
         });
 
+      const firstDate = new Date();
+      //firstDate.setHours(firstDate.getHours() - 3);
+      console.log(firstDate);
+
       const createdTask = await Task.create({
         name,
         sample,
         ownerId: user_id,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: firstDate,
+        updatedAt: firstDate,
       });
 
       return res.status(201).json({ createdTask, status: "success" });
