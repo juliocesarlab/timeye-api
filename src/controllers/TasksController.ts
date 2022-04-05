@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Task from "../models/task";
 import UsersServices from "../services/users/UsersServices";
+import { getTodayStats, getWeekStats } from "../services/Utils/util";
 
 class TasksController {
   async index(req: Request, res: Response) {
@@ -112,11 +113,15 @@ class TasksController {
           .status(404)
           .json({ message: "This task don't exists", status: "failure" });
 
+      const updatedAt = new Date();
+      updatedAt.setHours(updatedAt.getHours() - 3); // utc format
+
       await task.updateOne({
         name,
         sample,
         timeSpent,
         productivity,
+        updatedAt,
       });
 
       res.status(200).json({ status: "success" });
@@ -154,7 +159,7 @@ class TasksController {
     }
   }
 
-  async getTodayStatistics(req: Request, res: Response) {
+  async getStatistics(req: Request, res: Response) {
     try {
       const { user_id } = req.params;
 
@@ -165,42 +170,24 @@ class TasksController {
           .status(404)
           .json({ message: "User not found", status: "failure" });
 
-      let todayStart = new Date();
-      todayStart.setHours(0, 0, 0, 0);
+      const { tasks, hoursSpentSum, dayProductivityPercentage } =
+        await getTodayStats(user_id);
 
-      let todayEnd = new Date();
-      todayEnd.setHours(23, 59, 59, 999);
+      const { weekHoursSpentSum, weekProductivityPercentage } =
+        await getWeekStats(user_id);
 
-      const tasks = await Task.find({
-        ownerId: user_id,
-        updatedAt: { $gte: todayStart, $lte: todayEnd },
-      });
-
-      const allTimeSpentFromTasks = tasks.map((task) => {
-        const timeSpent = task.timeSpent;
-        const test = new Date(timeSpent);
-        console.log(test);
-        const hours = new Date(timeSpent).getHours();
-
-        const minutes = new Date(timeSpent).getMinutes() / 60; //convert to hours
-
-        const seconds = new Date(timeSpent).getSeconds() / 60 / 60; //convert to hours;
-
-        const hoursSum = hours + minutes + seconds;
-        console.log(hoursSum.toFixed(2));
-        return parseFloat(hoursSum.toFixed(2));
-      });
-
-      const hoursSpentSum = allTimeSpentFromTasks.reduce(
-        (prev, curr) => prev + curr
-      );
-
-      const dayProductivityPercentage = (hoursSpentSum / 8) * 100;
+      const stats = {
+        hoursSpentSum,
+        dayProductivityPercentage,
+        weekHoursSpentSum,
+        weekProductivityPercentage,
+      };
 
       if (tasks) {
-        return res
-          .status(200)
-          .json({ tasks, hoursSpentSum, dayProductivityPercentage });
+        return res.status(200).json({
+          tasks,
+          stats,
+        });
       }
     } catch (e) {
       return res.status(500).json({ e });

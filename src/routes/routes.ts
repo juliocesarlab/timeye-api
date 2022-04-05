@@ -25,7 +25,7 @@ routes.delete("/users/:id", UsersController.destroy);
 /* Task Routes */
 
 routes.get("/users/:user_id/tasks", TasksController.index);
-routes.get("/users/:user_id/tasks/today", TasksController.getTodayStatistics);
+routes.get("/users/:user_id/tasks/today", TasksController.getStatistics);
 routes.get("/users/:user_id/tasks/:id", TasksController.show);
 routes.post("/users/:user_id/tasks", TasksController.create);
 routes.put("/users/:user_id/tasks/:id", TasksController.update);
