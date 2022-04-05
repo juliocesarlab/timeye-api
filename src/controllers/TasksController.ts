@@ -77,8 +77,7 @@ class TasksController {
         });
 
       const firstDate = new Date();
-      //firstDate.setHours(firstDate.getHours() - 3);
-      console.log(firstDate);
+      firstDate.setHours(firstDate.getHours() - 3);
 
       const createdTask = await Task.create({
         name,
