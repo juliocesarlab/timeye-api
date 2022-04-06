@@ -6,26 +6,17 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       index: {
-        unique: true
-      }
+        unique: true,
+      },
     },
     password: {
       type: String,
       required: true,
     },
-    
-    dayTimeSum: {
-      type: Number,
-      default: 0
-    },
-    weekTimeSum: {
-      type: Number,
-      default: 0
-    }
   },
   {
-    timestamps: true
+    timestamps: true,
   }
-)
+);
 
-export default mongoose.model('User', userSchema);
+export default mongoose.model("User", userSchema);
