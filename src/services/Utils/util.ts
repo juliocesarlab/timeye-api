@@ -8,10 +8,14 @@ export async function getTodayStats(user_id: string) {
   const todayEnd = new Date();
   todayEnd.setHours(23, 59, 59, 999);
 
-  const tasks = await Task.find({
-    ownerId: user_id,
-    updatedAt: { $gte: todayStart, $lte: todayEnd },
-  });
+  const tasks = await Task.aggregate([
+    {
+      $match: {
+        ownerId: user_id,
+        updatedAt: { $gte: todayStart, $lte: todayEnd },
+      },
+    },
+  ]);
 
   const allTimeSpentFromTasks = tasks.map((task) => {
     const timeSpent = task.timeSpent;
@@ -49,11 +53,25 @@ export async function getWeekStats(user_id: string) {
     return hoursSum;
   });
 
+  const allTimersWithNameAndId = tasks.map((task) => {
+    const timeSpent = task.timeSpent;
+    const taskId = task._id;
+    const taskName = task.name;
+    const hours = new Date(timeSpent).getUTCHours();
+    const minutes = new Date(timeSpent).getUTCMinutes() / 60; //convert to hours
+    const seconds = new Date(timeSpent).getUTCSeconds() / 60 / 60; //convert to hours;
+    const hoursSum = hours + minutes + seconds;
+    return { taskId, taskName, hoursSum };
+  });
+
+  const descTimerArrValue = allTimersWithNameAndId.sort((a, b) => (a.hoursSum - b.hoursSum)).reverse()
+
+
   const weekHoursSpentSum = allTimeSpentFromTasks.reduce(
     (prev, curr) => prev + curr
   );
 
   const weekProductivityPercentage = ((weekHoursSpentSum / 8) * 100).toFixed(2);
 
-  return { weekHoursSpentSum, weekProductivityPercentage };
+  return { descTimerArrValue, weekHoursSpentSum, weekProductivityPercentage };
 }

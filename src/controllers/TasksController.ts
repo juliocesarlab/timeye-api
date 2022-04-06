@@ -172,13 +172,17 @@ class TasksController {
           .status(404)
           .json({ message: "User not found", status: "failure" });
 
-      const { tasks, hoursSpentSum, dayProductivityPercentage } =
+      const { tasks, hoursSpentSum, dayProductivityPercentage }: any =
         await getTodayStats(user_id);
 
-      const { weekHoursSpentSum, weekProductivityPercentage } =
-        await getWeekStats(user_id);
+      const {
+        weekHoursSpentSum,
+        weekProductivityPercentage,
+        descTimerArrValue,
+      } = await getWeekStats(user_id);
 
       const stats = {
+        descTimerArrValue,
         hoursSpentSum,
         dayProductivityPercentage,
         weekHoursSpentSum,
