@@ -19,7 +19,7 @@ const taskSchema = new mongoose.Schema(
     timeSpent: {
       type: Date,
       required: false,
-      default: new Date().setHours(-3, 0, 0, 0),
+      default: new Date().setUTCHours(-3, 0, 0, 0),
     },
 
     productivity: {
