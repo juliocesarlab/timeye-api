@@ -77,7 +77,7 @@ class TasksController {
         });
 
       const firstDate = new Date();
-      firstDate.setHours(firstDate.getHours() - 3);
+      firstDate.setHours(firstDate.getUTCHours() - 3);
 
       const createdTask = await Task.create({
         name,
