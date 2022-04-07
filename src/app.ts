@@ -5,10 +5,11 @@ import "./services/database/index";
 
 class App {
   public server: Application;
+  PORT = process.env.PORT;
 
   constructor() {
     this.server = express();
-    this.server.listen(5000);
+    this.server.listen(this.PORT || 5000);
     this.middlewares();
     this.routes();
   }
