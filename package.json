@@ -23,7 +23,6 @@
   },
   "scripts": {
     "dev": "nodemon",
-    "start": "node dist/src/app.js",
-    "build": "rimraf ./build && tsc"
+    "start": "node dist/src/app.js"
   }
 }
