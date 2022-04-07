@@ -23,6 +23,7 @@
   },
   "scripts": {
     "dev": "nodemon",
-    "start": "rimraf ./build && tsc"
+    "start": "rimraf ./build && tsc",
+    "rimraf": "./node_modules/rimraf/bin.js"
   }
 }
