@@ -165,8 +165,8 @@ class TasksController {
   async getStatistics(req: Request, res: Response) {
     try {
       const { user_id } = req.params;
-
       const user = await UsersServices.verifyIfExistsById(user_id);
+
       if (!user)
         return res
           .status(404)
