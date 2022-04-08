@@ -196,7 +196,7 @@ class TasksController {
         });
       }
     } catch (e) {
-      return res.status(500).json({ e });
+      return res.status(500).json({ e: JSON.stringify(e) });
     }
   }
 }

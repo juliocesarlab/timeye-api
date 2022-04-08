@@ -268,13 +268,13 @@ var TasksController = /** @class */ (function () {
                         if (tasks) {
                             return [2 /*return*/, res.status(200).json({
                                     tasks: tasks,
-                                    stats: stats,
+                                    stas: stas,
                                 })];
                         }
                         return [3 /*break*/, 5];
                     case 4:
                         e_6 = _c.sent();
-                        return [2 /*return*/, res.status(500).json({ e: e_6 })];
+                        return [2 /*return*/, res.status(500).json({ e: JSON.stringify(e_6) })];
                     case 5: return [2 /*return*/];
                 }
             });
