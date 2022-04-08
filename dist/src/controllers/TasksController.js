@@ -134,7 +134,7 @@ var TasksController = /** @class */ (function () {
                                     status: "failure",
                                 })];
                         firstDate = new Date();
-                        firstDate.setHours(firstDate.getHours() - 3);
+                        firstDate.setHours(firstDate.getUTCHours() - 3);
                         return [4 /*yield*/, task_1.default.create({
                                 name: name,
                                 sample: sample,

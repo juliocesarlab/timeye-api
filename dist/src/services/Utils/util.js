@@ -110,7 +110,9 @@ function getWeekStats(user_id) {
                         var hoursSum = hours + minutes + seconds;
                         return { taskId: taskId, taskName: taskName, hoursSum: hoursSum };
                     });
-                    descTimerArrValue = allTimersWithNameAndId.sort(function (a, b) { return (a.hoursSum - b.hoursSum); }).reverse();
+                    descTimerArrValue = allTimersWithNameAndId
+                        .sort(function (a, b) { return a.hoursSum - b.hoursSum; })
+                        .reverse();
                     weekHoursSpentSum = allTimeSpentFromTasks.reduce(function (prev, curr) { return prev + curr; });
                     weekProductivityPercentage = ((weekHoursSpentSum / 8) * 100).toFixed(2);
                     return [2 /*return*/, { descTimerArrValue: descTimerArrValue, weekHoursSpentSum: weekHoursSpentSum, weekProductivityPercentage: weekProductivityPercentage }];

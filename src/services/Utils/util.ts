@@ -31,7 +31,6 @@ export async function getTodayStats(user_id: string) {
   );
 
   const dayProductivityPercentage = ((hoursSpentSum / 8) * 100).toFixed(2);
-
   return { tasks, hoursSpentSum, dayProductivityPercentage };
 }
 
@@ -64,8 +63,9 @@ export async function getWeekStats(user_id: string) {
     return { taskId, taskName, hoursSum };
   });
 
-  const descTimerArrValue = allTimersWithNameAndId.sort((a, b) => (a.hoursSum - b.hoursSum)).reverse()
-
+  const descTimerArrValue = allTimersWithNameAndId
+    .sort((a, b) => a.hoursSum - b.hoursSum)
+    .reverse();
 
   const weekHoursSpentSum = allTimeSpentFromTasks.reduce(
     (prev, curr) => prev + curr
