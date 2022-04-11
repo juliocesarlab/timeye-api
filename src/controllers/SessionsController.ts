@@ -9,7 +9,7 @@ class SessionsController {
     try {
       const { email, password } = req.body;
       const user = await User.findOne({ email }); // same as email: email
-      console.log(user);
+
       if (!user)
         return res
           .status(401)
